@@ -120,6 +120,16 @@ class QuickAddNewExtension extends Extension {
 		return $this->AddNewForm()->forTemplate();
 	}
 
+  // =======================
+  // = recreates the array =
+  // =======================
+
+  function reCreateList ($class){
+		$tagsMap = $class::get()->map()->toArray();
+		asort($tagsMap);
+    return $tagsMap;
+  }
+
 
 	/**
 	 * Handles adding the new object
@@ -131,8 +141,8 @@ class QuickAddNewExtension extends Extension {
 		$form->saveInto($obj);
 		$obj->write();
 
-		$callback = $this->sourceCallback;
-		$items = $callback();
+		$items = $this->reCreateList($this->addNewClass);
+
 		$this->owner->setSource($items);
 
 		// if this field is a multiselect field, we add the new Object ID to the existing 
